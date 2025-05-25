@@ -8,7 +8,7 @@ def choose_evenly_spaced(lst, count):
         return [lst[0]]
     if count > len(lst):
         raise ValueError("Cannot choose more items than are in the list.")
-
+    
     step = (len(lst) - 1) / (count - 1)
     indices = [round(i * step) for i in range(count)]
     return [lst[i] for i in indices]
@@ -33,16 +33,14 @@ if st.button("Generate Spaced Frequencies"):
     try:
         result = choose_evenly_spaced(numbers, count)
 
-        # Table header
-        col1, col2 = st.columns([1, 2])
-        col1.markdown("**Vehicle**")
-        col2.markdown("**Frequency**")
-
-        # Table rows
+        # Generate HTML table
+        html = "<table style='width:100%; border-collapse: collapse;'>"
+        html += "<tr><th style='text-align: left; padding: 4px;'>Vehicle</th><th style='text-align: left; padding: 4px;'>Frequency</th></tr>"
         for i, value in enumerate(result, start=1):
-            col1, col2 = st.columns([1, 2])
-            col1.write(i)
-            col2.write(value)
+            html += f"<tr><td style='padding: 4px;'>{i}</td><td style='padding: 4px;'>{value}</td></tr>"
+        html += "</table>"
+
+        st.markdown(html, unsafe_allow_html=True)
 
     except ValueError as e:
         st.error(str(e))
